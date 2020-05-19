@@ -10,12 +10,13 @@ from otdr.block_parser import (
     BlockParser,
     CksumParser,
     DataPtsParser,
-    GenParamsParser,
-    SupParamsParser,
+    SupParamsParserV1,
+    SupParamsParserV2,
     FxdParamsParser,
-    KeyEventsParser,
+    KeyEventsParserV1,
+    KeyEventsParserV2,
     LnkParamsParser,
-    ProprietaryBlockParser,
+    ProprietaryBlockParser, GenParamsParserV2, GenParamsParserV1,
 )
 from otdr.type_parser import StringParser
 
@@ -56,20 +57,6 @@ class BaseSorParser(ABC):
             )
         self.part_parser = PartParser()
 
-    def _find_parser_for_block(self, block: Block) -> BlockParser:
-        blocks = {
-            "Cksum": CksumParser,
-            "DataPts": DataPtsParser,
-            "GenParams": GenParamsParser,
-            "SupParams": SupParamsParser,
-            "FxdParams": FxdParamsParser,
-            "KeyEvents": KeyEventsParser,
-            "LnkParams": LnkParamsParser,
-            "ProprietaryBlock": ProprietaryBlockParser,
-        }
-        for name, parser_class in blocks.items():
-            if block.name == name:
-                return parser_class(self.filehandle, block.position)
 
     def parse(self) -> List[BaseBlockData]:
         parsed = self.part_parser.parse()
@@ -106,6 +93,20 @@ class SorParserV1(BaseSorParser):
             if parser:
                 self.part_parser.register_parser(parser)
 
+    def _find_parser_for_block(self, block: Block) -> BlockParser:
+        blocks = {
+            "Cksum": CksumParser,
+            "DataPts": DataPtsParser,
+            "GenParams": GenParamsParserV1,
+            "SupParams": SupParamsParserV1,
+            "FxdParams": FxdParamsParser,
+            "KeyEvents": KeyEventsParserV1,
+            "LnkParams": LnkParamsParser,
+            "ProprietaryBlock": ProprietaryBlockParser,
+        }
+        for name, parser_class in blocks.items():
+            if block.name == name:
+                return parser_class(self.filehandle, block.position)
 
 class SorParserV2(BaseSorParser):
     version: int = 2
@@ -120,6 +121,20 @@ class SorParserV2(BaseSorParser):
             if parser:
                 self.part_parser.register_parser(parser)
 
+    def _find_parser_for_block(self, block: Block) -> BlockParser:
+        blocks = {
+            "Cksum": CksumParser,
+            "DataPts": DataPtsParser,
+            "GenParams": GenParamsParserV2,
+            "SupParams": SupParamsParserV2,
+            "FxdParams": FxdParamsParser,
+            "KeyEvents": KeyEventsParserV2,
+            "LnkParams": LnkParamsParser,
+            "ProprietaryBlock": ProprietaryBlockParser,
+        }
+        for name, parser_class in blocks.items():
+            if block.name == name:
+                return parser_class(self.filehandle, block.position)
 
 class VersionParser:
     """

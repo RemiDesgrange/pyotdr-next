@@ -8,6 +8,7 @@ class BaseParser(ABC):
     """
 
     filehandler: BinaryIO
+    speed_of_light: float = 299792.458 / 1.0e6  # = 0.299792458 km/usec
 
     def __init__(self, filehandler: BinaryIO):
         self.filehandler = filehandler

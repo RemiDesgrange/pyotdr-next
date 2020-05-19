@@ -51,13 +51,13 @@ class MapBlock(BaseBlockData):
 
 @dataclass
 class SupParams(BaseBlockData):
-    supplier: str
-    OTDR: str
-    OTDR_serial_number: str
-    module: str
-    module_serial_number: str
-    software: str
-    other: str  # proprietary stuff.
+    supplier: str = ""
+    OTDR: str = ""
+    OTDR_serial_number: str = ""
+    module: str = ""
+    module_serial_number: str = ""
+    software: str =""
+    other: str = "" # proprietary stuff.
 
 
 @dataclass
@@ -147,32 +147,31 @@ class FiberType(Enum):
     def __repr__(self) -> str:
         return f"G.{self.value}"
 
-
 @dataclass
 class GenParams:
-    build_condition: str
-    cable_id: str
-    cable_code: str
-    comment: str
-    fiber_id: str
-    fiber_type: FiberType
-    language: str
-    locationA: str
-    locationB: str
-    operator: str
-    user_offset: int
-    user_offset_distance: int
-    wavelength: NmValue
+    language: str = ""
+    cable_id: str = ""
+    fiber_id: str = ""
+    cable_code: str = ""
+    wavelength: NmValue = None
+    comment: str = ""
+    fiber_type: FiberType = None
+    build_condition: str = ""
+    locationA: str = ""
+    locationB: str = ""
+    operator: str = ""
+    user_offset: int = None
+    user_offset_distance: int = None
 
 
 @dataclass
 class KeyEventSummary:
-    ORL: float
-    ORL_start: float
-    ORL_finish: float
-    loss_start: float
-    loss_end: float
-    total_loss: float
+    ORL: float = None
+    ORL_start: float = None
+    ORL_finish: float = None
+    loss_start: float = None
+    loss_end: float = None
+    total_loss: float = None
 
 
 class EventModeType(BaseEnum):
@@ -181,19 +180,27 @@ class EventModeType(BaseEnum):
     F = "F"
     M = "M"
     D = "D"
+    unknown = "unknown"
 
 
 class EventType(BaseEnum):
     loss_drop_gain = 0
     reflection = 1
     multiple = 2  # multiple even in one key (loss+drop ?)
+    unknown = -1
+
+    def __str__(self) -> str:
+        return str(self.name)
+
+    def __repr__(self) -> str:
+        return str(self.name)
 
 
 @dataclass
 class EventDataType:
-    reference: str
-    type: EventType
-    mode: EventModeType
+    reference: str = None
+    type: EventType = None
+    mode: EventModeType = None
 
 
 @dataclass
@@ -202,17 +209,17 @@ class Event:
     A KeyEvent Single event
     """
 
-    comment: str
-    distance: float
-    peak = (float,)
-    refl_loss = (float,)
-    slope: float
-    splice_loss: float
-    end_of_previous: float
-    start_of_current: float
-    end_of_current: float
-    start_of_next: float
-    type: EventDataType
+    comment: str = ""
+    distance: float = None
+    peak: float = None
+    refl_loss: float = None
+    slope: float = None
+    splice_loss: float = None
+    end_of_previous: float = None
+    start_of_current: float = None
+    end_of_current: float = None
+    start_of_next: float = None
+    type: EventDataType = None
 
 
 @dataclass

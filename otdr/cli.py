@@ -25,7 +25,7 @@ def main(sor_file: str, output_format: str, timezone: str, include_data_points: 
     blocks = parser.parse()
     for b in blocks:
         if b:
-            print(json.dumps(asdict(b), indent=2))
+            print(json.dumps(asdict(b), indent=2, default=str))
 
 
 if __name__ == "__main__":
