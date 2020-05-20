@@ -5,6 +5,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 import click
+from dicttoxml import dicttoxml
 
 from otdr.file_parser import ParserFactory
 
@@ -21,11 +22,20 @@ def main(sor_file: str, output_format: str, timezone: str, include_data_points: 
     logger = logging.getLogger("pyOTDR")
     LOG_LEVEL = os.getenv("LOG_LEVEL", "DEBUG")
     logger.setLevel(LOG_LEVEL)
+
     parser = ParserFactory.create_parser(Path(sor_file))
     blocks = parser.parse()
+    final_version = dict()
     for b in blocks:
         if b:
-            print(json.dumps(asdict(b), indent=2, default=str))
+            if not include_data_points and b.__class__.__name__ == "DataPoints":
+                b.points = None
+            final_version[b.__class__.__name__] = asdict(b)
+
+    if output_format == "JSON":
+        print(json.dumps(final_version, indent=2, default=str))
+    if output_format == "XML":
+        print(dicttoxml(final_version))
 
 
 if __name__ == "__main__":

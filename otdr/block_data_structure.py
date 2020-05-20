@@ -56,24 +56,25 @@ class SupParams(BaseBlockData):
     OTDR_serial_number: str = ""
     module: str = ""
     module_serial_number: str = ""
-    software: str =""
-    other: str = "" # proprietary stuff.
+    software: str = ""
+    other: str = ""  # proprietary stuff.
 
 
 @dataclass
 class Cksum(BaseBlockData):
-    checksum: int
-    checksum_ours: int
+    file_checksum: int
+    computed_checksum: int
     match: bool
 
 
 @dataclass
-class DataPoint(BaseBlockData):
+class DataPoints(BaseBlockData):
     max_before_offset: float
     min_before_offset: float
     data_points: int
     num_traces: int
     scaling_factor: float
+    points: List[float] = None  # If we don't want points.
 
 
 @dataclass
@@ -146,6 +147,7 @@ class FiberType(Enum):
 
     def __repr__(self) -> str:
         return f"G.{self.value}"
+
 
 @dataclass
 class GenParams:

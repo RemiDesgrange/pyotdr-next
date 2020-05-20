@@ -2,3 +2,4 @@
 .pytest_cache
 pyOTDR.egg-info
 __pycache__
+.python-version
