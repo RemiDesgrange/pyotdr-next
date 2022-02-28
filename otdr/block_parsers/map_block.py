@@ -1,15 +1,8 @@
 import logging
 
-from otdr.block_data_structure import (
-    Block,
-    MapBlock,
-)
+from otdr.block_data_structure import Block, MapBlock
 from otdr.block_parsers.abstract_parser import BlockParser
-from otdr.type_parser import (
-    UintParser,
-    UShortParser,
-    StringParser,
-)
+from otdr.type_parser import StringParser, UintParser, UShortParser
 
 logger = logging.getLogger("pyOTDR")
 

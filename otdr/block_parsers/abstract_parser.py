@@ -5,7 +5,7 @@ from typing import BinaryIO
 from otdr.base_parser import BaseParser
 from otdr.block_data_structure import BaseBlockData
 
-logger = logging.getLogger("pyOTDR")
+logger = logging.getLogger(__name__)
 
 
 class BlockParser(BaseParser):

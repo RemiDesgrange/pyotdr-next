@@ -2,30 +2,30 @@ import logging
 from abc import ABC
 from io import IOBase
 from pathlib import Path
-from typing import BinaryIO, Type, Union, List
+from typing import BinaryIO, List, Type, Union
 
-from otdr.block_data_structure import Block, BaseBlockData, MapBlock
+from otdr.block_data_structure import BaseBlockData, Block, MapBlock
 from otdr.block_parsers import (
-    MapBlockParser,
     CksumParserV1,
     CksumParserV2,
-    SupParamsParserV1,
-    SupParamsParserV2,
+    DataPtsParserV1,
+    DataPtsParserV2,
     FxdParamsParserV1,
     FxdParamsParserV2,
+    GenParamsParserV1,
+    GenParamsParserV2,
     KeyEventsParserV1,
     KeyEventsParserV2,
     LnkParamsParser,
+    MapBlockParser,
     ProprietaryBlockParser,
-    GenParamsParserV2,
-    GenParamsParserV1,
-    DataPtsParserV2,
-    DataPtsParserV1,
+    SupParamsParserV1,
+    SupParamsParserV2,
 )
 from otdr.block_parsers.abstract_parser import BlockParser
 from otdr.type_parser import StringParser
 
-logger = logging.getLogger("pyOTDR")
+logger = logging.getLogger(__name__)
 
 
 class ParserFactory:
@@ -36,10 +36,10 @@ class ParserFactory:
         """
         Create a parser based on the
         """
-        if isinstance(sor_file, Path):
-            filehandle = open(sor_file, "rb")
-        else:
-            filehandle = sor_file
+        #        if isinstance(sor_file, Path):
+        #            filehandle = open(sor_file, "rb")
+        #        else:
+        #            filehandle = sor_file
 
         return VersionParser(filehandle).parse()
 

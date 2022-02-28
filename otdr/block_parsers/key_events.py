@@ -2,27 +2,20 @@ import logging
 import re
 
 from otdr.block_data_structure import (
-    KeyEvents,
     Event,
     EventDataType,
-    EventType,
     EventModeType,
+    EventType,
+    KeyEvents,
     KeyEventSummary,
 )
 from otdr.block_parsers.abstract_parser import BlockParser
-from otdr.type_parser import (
-    UintParser,
-    UShortParser,
-    StringParser,
-    IntParser,
-)
+from otdr.type_parser import IntParser, StringParser, UintParser, UShortParser
 
 logger = logging.getLogger("pyOTDR")
 
 
 class KeyEventParser(BlockParser):
-
-
     def _parse_event_type(self, evt_type: str) -> EventDataType:
         evt_type_pattern = re.compile("(.)(.)9999LS")
         match_res = evt_type_pattern.match(evt_type)
@@ -44,6 +37,7 @@ class KeyEventParser(BlockParser):
             ORL_finish=UintParser(self.filehandler).parse() * factor,
         )
 
+
 class KeyEventsParserV1(KeyEventParser):
     def parse(self) -> KeyEvents:
         super().parse()
@@ -55,7 +49,6 @@ class KeyEventsParserV1(KeyEventParser):
             events.append(self._parse_events())
         summary = self._parse_summary()
         return KeyEvents(summary, events)
-
 
     def _parse_events(self) -> Event:
         fh = self.filehandler
@@ -75,6 +68,7 @@ class KeyEventsParserV1(KeyEventParser):
             type=evt_type,
             comment=StringParser(fh).parse(),
         )
+
 
 class KeyEventsParserV2(KeyEventParser):
     def parse(self) -> KeyEvents:
@@ -114,5 +108,3 @@ class KeyEventsParserV2(KeyEventParser):
             peak=UintParser(fh).parse(),
             comment=StringParser(fh).parse(),
         )
-
-

@@ -1,9 +1,13 @@
+"""
+All the data structure needed to serialise to 
+"""
+
 import logging
 from abc import ABC
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 logger = logging.getLogger("pyOTDR")
 
@@ -51,13 +55,13 @@ class MapBlock(BaseBlockData):
 
 @dataclass
 class SupParams(BaseBlockData):
-    supplier: str = ""
-    OTDR: str = ""
-    OTDR_serial_number: str = ""
-    module: str = ""
-    module_serial_number: str = ""
-    software: str = ""
-    other: str = ""  # proprietary stuff.
+    supplier: str
+    OTDR: str
+    OTDR_serial_number: str
+    module: str
+    module_serial_number: str
+    software: str
+    other: Optional[str] = None  # proprietary stuff.
 
 
 @dataclass
@@ -134,6 +138,7 @@ class FxdParams(BaseBlockData):
 
 
 class FiberType(Enum):
+    UNKNOWN = 0
     G651 = 651
     G652 = 652
     G653 = 653
@@ -150,30 +155,30 @@ class FiberType(Enum):
 
 
 @dataclass
-class GenParams:
+class GenParams(BaseBlockData):
     language: str = ""
     cable_id: str = ""
     fiber_id: str = ""
     cable_code: str = ""
-    wavelength: NmValue = None
-    comment: str = ""
-    fiber_type: FiberType = None
-    build_condition: str = ""
-    locationA: str = ""
-    locationB: str = ""
-    operator: str = ""
+    wavelength: NmValue
+    comment: Optional[str] = None
+    fiber_type: FiberType
+    build_condition: Optional[str]
+    locationA: str
+    locationB: str
+    operator: str
     user_offset: int = None
     user_offset_distance: int = None
 
 
 @dataclass
-class KeyEventSummary:
-    ORL: float = None
-    ORL_start: float = None
-    ORL_finish: float = None
-    loss_start: float = None
-    loss_end: float = None
-    total_loss: float = None
+class KeyEventSummary(BaseBlockData):
+    ORL: float
+    ORL_start: float
+    ORL_finish: float
+    loss_start: float
+    loss_end: float
+    total_loss: float
 
 
 class EventModeType(BaseEnum):
@@ -182,6 +187,7 @@ class EventModeType(BaseEnum):
     F = "F"
     M = "M"
     D = "D"
+    S = "S"
     unknown = "unknown"
 
 
@@ -199,21 +205,21 @@ class EventType(BaseEnum):
 
 
 @dataclass
-class EventDataType:
-    reference: str = None
-    type: EventType = None
-    mode: EventModeType = None
+class EventDataType(BaseBlockData):
+    reference: str
+    type: EventType
+    mode: EventModeType
 
 
 @dataclass
-class Event:
+class Event(BaseBlockData):
     """
     A KeyEvent Single event
     """
 
-    comment: str = ""
-    distance: float = None
-    peak: float = None
+    comment: Optional[str]
+    distance: float
+    peak: float
     refl_loss: float = None
     slope: float = None
     splice_loss: float = None
@@ -225,6 +231,6 @@ class Event:
 
 
 @dataclass
-class KeyEvents:
+class KeyEvents(BaseBlockData):
     summary: KeyEventSummary
     events: List[Event]

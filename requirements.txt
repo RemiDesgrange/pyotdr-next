@@ -1,3 +1,4 @@
 crcmod
 dicttoxml
 click
+cbor2

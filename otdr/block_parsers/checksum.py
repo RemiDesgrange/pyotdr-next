@@ -30,5 +30,5 @@ class CksumParserV2(BlockParser):
         file_cs = UShortParser(fh).parse()
         fh.seek(0)
         computed_cs = crcmod.predefined.Crc("crc-ccitt-false")
-        computed_cs.update(fh.read(self.start_position+len('Cksum\0')))
+        computed_cs.update(fh.read(self.start_position + len("Cksum\0")))
         return Cksum(file_cs, computed_cs.crcValue, file_cs == computed_cs.crcValue)

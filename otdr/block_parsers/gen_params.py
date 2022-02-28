@@ -1,16 +1,8 @@
 import logging
 
-from otdr.block_data_structure import (
-    GenParams,
-    NmValue,
-    FiberType,
-)
+from otdr.block_data_structure import FiberType, GenParams, NmValue
 from otdr.block_parsers.abstract_parser import BlockParser
-from otdr.type_parser import (
-    UShortParser,
-    StringParser,
-    IntParser,
-)
+from otdr.type_parser import IntParser, StringParser, UShortParser
 
 logger = logging.getLogger("pyOTDR")
 

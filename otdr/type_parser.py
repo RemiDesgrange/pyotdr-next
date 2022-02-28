@@ -10,6 +10,10 @@ TypeParser = BaseParser
 
 
 class StringParser(TypeParser):
+    """
+    In SOR file, string is ended when `\00` is present.
+    """
+
     def parse(self) -> str:
         result = b""
         byte = self.filehandler.read(1)
